@@ -122,8 +122,16 @@ public class Hunter implements Actor
                     bear.setDead();
                     return where;
                 }
-            	
             }
+            else if (animal instanceof Wolf)
+            {
+            	Wolf wolf = (Wolf) animal;
+                if(wolf.isAlive()) 
+                { 
+                    wolf.setDead();
+                    return where;
+                }
+        	}
         }
         return null;
     }

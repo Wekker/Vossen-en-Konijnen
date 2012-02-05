@@ -15,10 +15,12 @@ import logic.Counter;
  * @author Ieme, Jermo, Yisong
  * @version 2012.01.29
  */
+@SuppressWarnings("rawtypes")
 public class FieldStats
 {
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
-    private HashMap<Class, Counter> counters;
+    
+	private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
 

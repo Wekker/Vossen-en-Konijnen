@@ -9,61 +9,60 @@ import logic.Location;
 
 
 /**
- * A simple model of a fox.
- * Foxes age, move, eat rabbits, and die.
+ * A simple model of a wolf.
+ * Wolfs age, move, eat Foxes and rabbits, and die.
  * 
  * @author Ieme, Jermo, Yisong
  * @version 2012.01.29
  */
-public class Fox extends Animal
+public class Wolf extends Animal
 {
-    // Characteristics shared by all foxes (class variables).
+    // Characteristics shared by all wolfs (class variables).
     
-    // The age at which a fox can start to breed.
-    private static int breeding_age = 3;
-    // The age to which a fox can live.
-    private static int max_age = 150;
-    // The likelihood of a fox breeding.
-    private static double breeding_probability = 0.025;
+    // The age at which a wolf can start to breed.
+    private static int breeding_age = 5;
+    // The age to which a wolf can live.
+    private static int max_age = 200;
+    // The likelihood of a wolf breeding.
+    private static double breeding_probability = 0.005;
     // The maximum number of births.
-    private static int max_litter_size = 8;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a fox can go before it has to eat again.
+    private static int max_litter_size = 3;
+
     
     /**
-     * Create a fox. A fox can be created as a new born (age zero
+     * Create a wolf. A wolf can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
      * 
-     * @param randomAge If true, the fox will have random age and hunger level.
+     * @param randomAge If true, the wolf will have random age and hunger level.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Fox(boolean randomAge, Field field, Location location)
+    public Wolf(boolean randomAge, Field field, Location location)
     {
         super(field, location);
         if(randomAge) {
             setAge(getRandom().nextInt(max_age));
-            setFoodLevel(getRandom().nextInt(RABBIT_FOOD_VALUE));
+            setFoodLevel(getRandom().nextInt(RABBIT_FOOD_VALUE + FOX_FOOD_VALUE));
         }
         else {
             setAge(0);
-            setFoodLevel(RABBIT_FOOD_VALUE);
+            setFoodLevel(RABBIT_FOOD_VALUE + FOX_FOOD_VALUE);
         }
     }
     
     /**
-     * This is what the fox does most of the time: it hunts for
+     * This is what the wolf does most of the time: it hunts for
      * rabbits. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param field The field currently occupied.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newWolfs A list to return newly born wolfs.
      */
-    public void act(List<Actor> newFoxes)
+    public void act(List<Actor> newWolfs)
     {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newFoxes);            
+            giveBirth(newWolfs);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -82,8 +81,8 @@ public class Fox extends Animal
     }
     
     /**
-     * returns the maximum age of a fox can live
-     * @return int maximum age of a fox can live
+     * returns the maximum age of a wolf can live
+     * @return int maximum age of a wolf can live
      */
     protected int getMaxAge()
     {
@@ -91,7 +90,7 @@ public class Fox extends Animal
     }
     
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Make this wolf more hungry. This could result in the wolf's death.
      */
     private void incrementHunger()
     {
@@ -122,31 +121,42 @@ public class Fox extends Animal
                     return where;
                 }
             }
+            else if (animal instanceof Fox)
+            {
+                Fox fox = (Fox) animal;
+                if(fox.isAlive()) 
+                { 
+                    fox.setDead();
+                    setFoodLevel(FOX_FOOD_VALUE);
+                    return where;
+                }
+            	
+            }
         }
         return null;
     }
     
     /**
-     * Check whether or not this fox is to give birth at this step.
+     * Check whether or not this wolf is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newWolfs A list to return newly born wolfs.
      */
-    private void giveBirth(List<Actor> newFoxes)
+    private void giveBirth(List<Actor> newWolfs)
     {
-        // New foxes are born into adjacent locations.
+        // New wolfs are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Fox young = new Fox(false, field, loc);
-            newFoxes.add(young);
+            Wolf young = new Wolf(false, field, loc);
+            newWolfs.add(young);
         }
     }
 
     /**
-     * A fox can breed if it has reached the breeding age.
+     * A wolf can breed if it has reached the breeding age.
      */
     protected boolean canBreed()
     {
@@ -160,7 +170,7 @@ public class Fox extends Animal
     public static void setBreedingAge(int breeding_age)
     {
     	if (breeding_age >= 0)
-    		Fox.breeding_age = breeding_age;
+    		Wolf.breeding_age = breeding_age;
     }
     
     
@@ -171,7 +181,7 @@ public class Fox extends Animal
     public static void setMaxAge(int max_age)
     {
     	if (max_age >= 1)
-    		Fox.max_age = max_age;
+    		Wolf.max_age = max_age;
     }
     
     /**
@@ -181,7 +191,7 @@ public class Fox extends Animal
     public static void setBreedingProbability(double breeding_probability)
     {
     	if (breeding_probability >= 0)
-    		Fox.breeding_probability = breeding_probability;
+    		Wolf.breeding_probability = breeding_probability;
     }
     
     /**
@@ -191,7 +201,7 @@ public class Fox extends Animal
     public static void setMaxLitterSize(int max_litter_size)
     {
     	if (max_litter_size >= 1)
-    		Fox.max_litter_size = max_litter_size;
+    		Wolf.max_litter_size = max_litter_size;
     }  
     
     /**
@@ -199,11 +209,11 @@ public class Fox extends Animal
      */
     public static void setDefault()
     {
-    	breeding_age = 3;
-    	max_age = 150;
-    	breeding_probability = 0.025;
-    	max_litter_size = 8;
-    } 
+    	breeding_age = 5;
+    	max_age = 200;
+    	breeding_probability = 0.005;
+    	max_litter_size = 3;
+    }
     
     /**
      * Getter om breeding_age op te halen

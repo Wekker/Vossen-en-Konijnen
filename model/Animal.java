@@ -27,6 +27,12 @@ public abstract class Animal implements Actor
     private int age;
     // An animal's food level, which is increased by eating.
     private int foodLevel;
+
+    // The food value of a single animal. In effect, this is the
+    // number of steps an animal can go before it has to eat again.
+    public static final int WOLFS_FOOD_VALUE = 27;
+    public static final int FOX_FOOD_VALUE = 18;
+    public static final int RABBIT_FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
