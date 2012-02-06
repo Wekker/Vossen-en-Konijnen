@@ -1,11 +1,15 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Iterator;
 
-import view.Field;
 
+
+import logic.Counter;
+import logic.Field;
 import logic.Location;
+import main.MainProgram;
 
 
 /**
@@ -24,7 +28,7 @@ public class Wolf extends Animal
     // The age to which a wolf can live.
     private static int max_age = 200;
     // The likelihood of a wolf breeding.
-    private static double breeding_probability = 0.005;
+    private static double breeding_probability = 0.025;
     // The maximum number of births.
     private static int max_litter_size = 3;
 
@@ -78,6 +82,38 @@ public class Wolf extends Animal
                 setDead();
             }
         }
+    }
+    
+    /**
+     * Zorgt er voor dat er geen nakomeling worden geboren als er te weinig voesel zijn.
+     * @return true als genoeg voedsel zijn
+     * @return false als niet genoeg voedsel zijn
+     */
+    @SuppressWarnings("rawtypes")
+	public boolean survivalInstinct()
+    {
+    	int foxCount = 0;
+    	int rabbitCount = 0;
+    	int wolfCount = 0;
+    	HashMap<Class, Counter> classStats = MainProgram.getSimulator().getSimulatorView().getStats().getPopulation();
+    	for (Class c : classStats.keySet()) {    		
+    		Counter info = classStats.get(c);
+		
+		if (info.getName().equals("model.Wolf")) {
+			wolfCount = classStats.get(c).getCount();
+		}
+		if (info.getName().equals("model.Fox")) {
+			foxCount = classStats.get(c).getCount();
+		}
+		if (info.getName().equals("model.Rabbit")) {
+			rabbitCount = classStats.get(c).getCount();
+		}
+    		
+    	}
+    	if (wolfCount >= rabbitCount * getBreedingProbability() * getMaxLitterSize() + foxCount * getBreedingProbability() * getMaxLitterSize()) {
+    		return false;
+    	}	
+    	return true;
     }
     
     /**
@@ -211,7 +247,7 @@ public class Wolf extends Animal
     {
     	breeding_age = 5;
     	max_age = 200;
-    	breeding_probability = 0.005;
+    	breeding_probability = 0.01;
     	max_litter_size = 3;
     }
     

@@ -3,8 +3,9 @@ package model;
 import java.util.List;
 import java.util.Random;
 
-import view.Field;
 
+
+import logic.Field;
 import logic.Location;
 import logic.Randomizer;
 
@@ -55,6 +56,13 @@ public abstract class Animal implements Actor
      * @param newAnimals A list to receive newly born animals.
      */
     public abstract void act(List<Actor> newAnimals);
+    
+    /**
+     * Zorgt er voor dat er geen nakomeling worden geboren als er te weinig voesel zijn.
+     * @return true als genoeg voedsel zijn
+     * @return false als niet genoeg voedsel zijn
+     */
+    public abstract boolean survivalInstinct();
     
     /**
      * Check whether the animal is alive or not.
@@ -135,7 +143,7 @@ public abstract class Animal implements Actor
     protected int breed()
     {
         int births = 0;
-        if(canBreed() && getRandom().nextDouble() <= getBreedingProbability()) {
+        if(survivalInstinct() && canBreed() && getRandom().nextDouble() <= getBreedingProbability()) {
             births = getRandom().nextInt(getMaxLitterSize()) + 1;
         }
         return births;

@@ -3,9 +3,10 @@ package model;
 import java.util.List;
 import java.util.Iterator;
 
-import view.Field;
+
 //import java.util.Random;
 
+import logic.Field;
 import logic.Location;
 
 

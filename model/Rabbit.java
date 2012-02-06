@@ -2,9 +2,11 @@ package model;
 
 import java.util.List;
 
-import view.Field;
 
+
+import logic.Field;
 import logic.Location;
+import main.MainProgram;
 
 /**
  * A simple model of a rabbit.
@@ -64,6 +66,17 @@ public class Rabbit extends Animal
                 setDead();
             }
         }
+    }
+
+    /**
+     * Zorgt er voor dat er geen nakomeling worden geboren als er te weinig voesel zijn.
+     * @return true als genoeg voedsel zijn
+     * @return false als niet genoeg voedsel zijn
+     */
+    public boolean survivalInstinct()
+    {
+    	MainProgram.getSimulator().getSimulatorView().getStats().getPopulation();
+    	return true;
     }
     
     /**

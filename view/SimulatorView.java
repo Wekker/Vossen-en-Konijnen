@@ -10,6 +10,8 @@ import javax.swing.text.DefaultCaret;
 import runner.ThreadRunner;
 
 import logic.Counter;
+import logic.Field;
+import logic.FieldStats;
 import main.MainProgram;
 import main.Simulator;
 import model.Bear;
@@ -736,7 +738,7 @@ public class SimulatorView extends JFrame {
 	}
 
 	/**
-	 * retourneert de counter op voor ieder kleur 
+	 * retourneert de counter voor ieder kleur 
 	 * @return colorStats HashMap die kleur bij houdt en de hoeveelheid
 	 */
 	@SuppressWarnings("rawtypes")
@@ -750,6 +752,16 @@ public class SimulatorView extends JFrame {
 		return colorStats;
 	}
 
+	/**
+	 * retourneert de counter voor ieder kleur
+	 * @return classStats HashMap die class bij hout en de hoeveelheid
+	 */
+	@SuppressWarnings("rawtypes")
+	public HashMap<Class, Counter> getPopulationDetails2() {
+		HashMap<Class, Counter> classStats = stats.getPopulation();
+		return classStats;
+	}
+	
 	/**
 	 * Determine whether the simulation should continue to run.
 	 * 

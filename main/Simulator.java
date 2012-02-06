@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Color;
 
-import view.Field;
 import view.SimulatorView;
 
+import logic.Field;
 import logic.Location;
 import logic.Randomizer;
 
