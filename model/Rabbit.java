@@ -75,7 +75,7 @@ public class Rabbit extends Animal
      */
     public boolean survivalInstinct()
     {
-    	MainProgram.getSimulator().getSimulatorView().getStats().getPopulation();
+//    	MainProgram.getSimulator().getSimulatorView().getStats().getPopulation();
     	return true;
     }
     

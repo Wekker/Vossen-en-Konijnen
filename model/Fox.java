@@ -26,7 +26,7 @@ public class Fox extends Animal
     // The age to which a fox can live.
     private static int max_age = 150;
     // The likelihood of a fox breeding.
-    private static double breeding_probability = 0.025;
+    private static double breeding_probability = 0.075;
     // The maximum number of births.
     private static int max_litter_size = 8;
     // The food value of a single rabbit. In effect, this is the
@@ -99,13 +99,14 @@ public class Fox extends Animal
     		Counter info = classStats.get(c);
     		
     		if (info.getName().equals("model.Fox")) {
-    			foxCount = classStats.get(c).getCount();
+    			foxCount = info.getCount();
     		}
     		if (info.getName().equals("model.Rabbit")) {
-    			rabbitCount = classStats.get(c).getCount();
+    			rabbitCount = info.getCount();
     		}
     	}
-    	if (foxCount >= rabbitCount * getBreedingProbability() * getMaxLitterSize() ) {
+    	if (1.5 *(foxCount + (foxCount * getBreedingProbability() * getMaxLitterSize())) >= rabbitCount) {
+    			//foxCount >= rabbitCount * getBreedingProbability() * getMaxLitterSize() ) {
     		return false;
     	}	
     	return true;
@@ -231,7 +232,7 @@ public class Fox extends Animal
     {
     	breeding_age = 3;
     	max_age = 150;
-    	breeding_probability = 0.025;
+    	breeding_probability = 0.075;
     	max_litter_size = 8;
     } 
     

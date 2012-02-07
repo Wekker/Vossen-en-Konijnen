@@ -27,7 +27,7 @@ public class Bear extends Animal
     // The age to which a bear can live.
     private static int max_age = 300;
     // The likelihood of a bear breeding.
-    private static double breeding_probability = 0.025;
+    private static double breeding_probability = 0.035;
     // The maximum number of births.
     private static int max_litter_size = 2;
     // The food value of a single wolf and a single fox. In effect, this is the
@@ -96,25 +96,26 @@ public class Bear extends Animal
     	int foxCount = 0;
     	int wolfCount = 0;
     	int bearCount = 0;
-    	int rabbitCount= 0;
+//    	int rabbitCount= 0;
     	HashMap<Class, Counter> classStats = MainProgram.getSimulator().getSimulatorView().getStats().getPopulation();
     	for (Class c : classStats.keySet()) {
     		Counter info = classStats.get(c);
     		
     		if (info.getName().equals("model.Wolf")) {
-    			wolfCount = classStats.get(c).getCount();
+    			wolfCount = info.getCount();
     		}
     		if (info.getName().equals("model.Fox")) {
-    			foxCount = classStats.get(c).getCount();
+    			foxCount = info.getCount();
     		}
     		if (info.getName().equals("model.Bear")) {
-    			bearCount = classStats.get(c).getCount();
+    			bearCount = info.getCount();
     		}
-    		if (info.getName().equals("model.Rabbit")) {
-    			rabbitCount = classStats.get(c).getCount();
-    		}
+//    		if (info.getName().equals("model.Rabbit")) {
+//    			rabbitCount = info.getCount();
+//    		}
     	}
-    	if (bearCount >= rabbitCount * getBreedingProbability() * getMaxLitterSize() + foxCount * getBreedingProbability() * getMaxLitterSize() + wolfCount * getBreedingProbability() * getMaxLitterSize()) {
+    	if (1.5 *(bearCount + (bearCount * getBreedingProbability() * getMaxLitterSize())) >= foxCount + wolfCount) {
+//    			bearCount >= (rabbitCount + foxCount + wolfCount) * getBreedingProbability() * getMaxLitterSize()) {
     		return false;
     	}	
     	return true;
@@ -173,6 +174,16 @@ public class Bear extends Animal
                     return where;
                 }
             	
+            }
+            else if (animal instanceof Rabbit)
+            {
+                Rabbit rabbit = (Rabbit) animal;
+                if(rabbit.isAlive()) 
+                { 
+                    rabbit.setDead();
+                    setFoodLevel(RABBIT_FOOD_VALUE);
+                    return where;
+                }         	
             }
         }
         return null;
@@ -253,7 +264,7 @@ public class Bear extends Animal
     {
     	breeding_age = 12;
     	max_age = 300;
-    	breeding_probability = 0.01;
+    	breeding_probability = 0.35;
     	max_litter_size = 2;
     }
     
